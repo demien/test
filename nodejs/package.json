@@ -1,0 +1,17 @@
+{
+    "dependencies": {
+        "underscore": "1.5.2",
+        "node-getopt": "0.2.3",
+        "express": "3.4.8",
+        "colors": "0.6.2",
+        "request": "2.34.0",
+        "tough-cookie": "2.0.0",
+        "moment": "2.4.0",
+        "fibers": "1.0.1",
+        "aws-sdk": "~2.0.0",
+        "string": "1.8.0",
+        "jquery": "2.1.0",
+        "archiver": "0.6.1",
+        "jsdom": "0.10.1"
+    }
+}

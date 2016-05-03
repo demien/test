@@ -7,7 +7,7 @@ var utils = require('utils');
 var G = window;
 G.shops = [];
 
-shop_url_list = ['http://www.boyouwang.com/news/line/0-0-102176-0-0-1-1.html', 'http://www.boyouwang.com/news/line/0-0-102175-0-0-1-1.html']
+shop_url_list = ['http://www.boyouwang.com/news/line/0-0-102176-0-0-1-1.html']
 
 casper.start();
 
@@ -28,22 +28,53 @@ casper.then(function(){
                 return urls
             })
             G.shop_urls = urls;
+            // G.shop_urls = [urls[0]];
         });
 
         casper.then(function(){
             G.shop_urls.map(function(url){
                 casper.then(function(){
                     casper.open(url);
-                    utils.dump(url);
+                    // utils.dump(url);
                     casper.then(function(){
 
                         var shop = this.evaluate(function(){
+                            String.prototype.ntrim = function(){
+                                var lines = this.split('\n').map(function(line){
+                                    return line.trim()
+                                })
+                                return lines.join('\n')
+                            }
+
                             var shop = {}
                             var css_selector_title = "h1"
-                            shop['title'] = $(css_selector_title)[0].textContent.trim().split("\n")[0];
+                            shop['title'] = $(css_selector_title)[0].textContent.split("\n")[1].trim();
 
                             var css_selector_images = ".jcarousel-clip ul li a img"
                             shop['images'] = $.map($(css_selector_images),function(foo){return foo.src;})
+
+                            var css_selector_selling_point = "#tab1 .bd"
+                            shop['selling_point'] = $(css_selector_selling_point).text().ntrim()
+
+                            var css_selector_travel = ".travel"
+                            var travel = $.map($(css_selector_travel), function(section_dom){
+                                var section = {}
+                                section['title'] = $(section_dom).find('h4').text().trim();
+                                section['text'] = $(section_dom).find('.desc').text().trim();
+                                section['image'] = $(section_dom).find('img').attr('src');
+                                return section
+                            })
+                            shop['travel'] = travel;
+
+                            var css_selector_fee = "#tab3 .bd"
+                            shop['fee'] = $(css_selector_fee).text().ntrim()
+
+                            var css_selector_notice = "#tab4 .bd"
+                            shop['notice'] = $(css_selector_fee).text().ntrim()
+
+                            var css_selector_description = ".d-info-content"
+                            shop['description'] = $(css_selector_description).text().ntrim()
+
                             return shop
                         });
 

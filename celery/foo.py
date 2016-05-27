@@ -1,5 +1,6 @@
 from tasks import add, sleep, xsum, error, dummy
 from celery import chord
+from celery import Celery
 
 if __name__ == '__main__':
     # x = chord((add.s(i, i) for i in xrange(10)), sleep.si())
@@ -12,3 +13,6 @@ if __name__ == '__main__':
     # chain()
     # print add.name
     # add.delay(4, 4)
+    # app = Celery('tasks', broker='redis://localhost:6379/0')
+    # print app.control.inspect().active_queues()
+    # app.control.add_consumer('add', reply=True)
